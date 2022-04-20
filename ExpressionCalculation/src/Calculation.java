@@ -120,6 +120,7 @@ public class Calculation {
         Scanner scanner = new Scanner(System.in);
         String ret = scanner.next();
         String turned = turned(ret); //得到后缀表达式
+        System.out.println(turned);
         System.out.println(evaluation(turned));//得到后缀表达式计算后的值
 
     }
