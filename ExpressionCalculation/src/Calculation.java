@@ -51,7 +51,7 @@ public class Calculation {
     }
 
     //对操作符入栈的处理
-    public static void compared(Stack<Character> numStack,Stack<Character> opStack,char num){
+    public static void  compared(Stack<Character> numStack,Stack<Character> opStack,char num){
         //1.如果运算符栈为空，直接将运算符入栈
         if(opStack.empty()){
             opStack.push(num);
