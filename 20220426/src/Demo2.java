@@ -175,33 +175,60 @@ class ListNode{
 
 public class Demo2 {
     //2.链式存储
-    public static ListNode reverse(MyLinkedList list, int start, int end){
-        ListNode cur=list.head;
-        ListNode prev = null;
+    //传入链表list和要反转的首位位置[start,end)
+    public static ListNode reverse(ListNode head, int start, int end){
+        ListNode cur=head;  //定义一个节点指向第一个节点
+        ListNode prev = null; //定义一个空节点
+        //创建变量i为start，当i小于end，进入循环
+        for(int i=start;i<end;i++) {
+            ListNode curNext = cur.next; //定义节点curNext指向cur的next引用
+            cur.next=prev; //prev节点赋值给cur的next引用
+            prev=cur; //cur赋值给prev
+            cur=curNext; //curNext赋值给cur
 
-        for(int i=start;i<end;i++){
-            ListNode curNext = cur.next;
-            cur.next=prev;
-            prev=cur;
-            cur=curNext;
         }
-
-        return prev;
-
+        return prev; //返回prev节点，也就是反转后链表的第一个节点
+    }
+    //链式存储，中间截断两部分A和B，A部分元素整体移到B的末尾   AB-->BA
+    //传入第一个节点和要开始截断的位置，即B的第一个节点下标
+    public static ListNode reverse1(ListNode head,int start){
+        ListNode cur = head; //定义一个节点cur指向head节点
+        ListNode prev = head; //定义一个节点prev指向head节点
+        //循环，让cur节点指向B部分的首元素节点，prev节点指向A部分尾元素节点
+        for(int i=0;i<start;i++){
+            prev=cur;
+            cur=cur.next;
+        }
+        //定义newHead节点指向cur，也就是翻转后链表的首个节点
+        ListNode newHead = cur;
+        //令prev的next节点为空，prev为翻转后链表的尾节点
+        prev.next=null;
+        //从cur位置开始遍历链表，直到cur的next节点为空，也就是遍历到了原链表的尾节点
+        while(cur.next!=null){
+            cur=cur.next;
+        }
+        //让cur的next节点指向head节点，也就是原链表的尾节点指向原链表的首个节点，B部分的尾节点指向A部分的首个节点
+        cur.next=head;
+        //返回新链表的首个节点
+        return newHead;
     }
 
-
     public static void main(String[] args) {
-        MyLinkedList myLinkedList = new MyLinkedList();
-        myLinkedList.addLast(1);
-        myLinkedList.addLast(2);
-        myLinkedList.addLast(3);
-        myLinkedList.addLast(4);
-        myLinkedList.addLast(5);
-        myLinkedList.addLast(6);
+        MyLinkedList myLinkedList = new MyLinkedList(); //不带头结点的单链表
+        //添加元素到链表末尾
+        myLinkedList.addLast(1);myLinkedList.addLast(2);myLinkedList.addLast(3);myLinkedList.addLast(4);
+        myLinkedList.addLast(5);myLinkedList.addLast(6);myLinkedList.addLast(7);myLinkedList.addLast(8);
+        ListNode rst = reverse1(myLinkedList.head,myLinkedList.size()/2); //传入链表的第一个节点和要截断的部分(B部分的首位置)
+        myLinkedList.headDisplay(rst); //输出变换后的链表
+    }
 
-        myLinkedList.headDisplay(reverse(myLinkedList, 0, myLinkedList.size()));
-
+    public static void main1(String[] args) {
+        MyLinkedList myLinkedList = new MyLinkedList(); //不带头结点的单链表
+        //添加元素到链表末尾
+        myLinkedList.addLast(1);myLinkedList.addLast(2);myLinkedList.addLast(3);myLinkedList.addLast(4);
+        myLinkedList.addLast(5);myLinkedList.addLast(6);myLinkedList.addLast(7);myLinkedList.addLast(8);
+        ListNode rst = reverse(myLinkedList.head, 0, myLinkedList.size()); //反转整个链表
+        myLinkedList.headDisplay(rst);
 
     }
 }
