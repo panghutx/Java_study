@@ -4,15 +4,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 
-@WebServlet("/time")
-public class GetTime extends HttpServlet{
-
+@WebServlet("/redirect")
+public class reDirectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setHeader("refresh","1");
-        long timestamp = new Date().getTime(); //得到当前的时间戳
-        resp.getWriter().write("timestamp:"+timestamp);
+        resp.setStatus(302);
+        resp.setHeader("location","https://youngsay.cn");
+
+        //resp.sendRedirect("https://youngsay.cn");
     }
 }
