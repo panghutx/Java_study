@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客列表</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/blog_list.css">
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="nav">
+        <!-- logo -->
+        <img src="image/logo2.jpg" alt="">
+        <!-- 标题 -->
+        <span class="title">我的博客系统</span>
+        <!-- 空白的占位符 -->
+        <span class="spacer"></span>
+        <!-- 右侧的几个链接 -->
+        <a href="blog_list.html">主页</a>
+        <a href="blog_edit.html">写博客</a>
+        <a href="logout">注销</a>
+    </div>
+
+    <!-- 版心 -->
+    <div class="container">
+        <!-- 左侧个人信息 -->
+        <div class="left">
+
+            <!-- 个人信息卡片 -->
+            <div class="card">
+                <!-- 用户头像 -->
+                <img src="image/头像.png" alt="">
+                <!-- 用户名字 -->
+                <h3>汤老湿</h3>
+                <!-- 用户的 github -->
+                <a href="">github 地址</a>
+                <!-- 统计信息 -->
+                <div class="counter">
+                    <span>文章</span>
+                    <span>分类</span>
+                </div>
+                <div class="counter">
+                    <span>2</span>
+                    <span>1</span>
+                </div>
+            </div>
+
+        </div>
+        <!-- 右侧内容详情 -->
+        <div class="right" style="overflow:auto;">
+            
+            <!-- <div class="blog"> 
+                <div class="title">我的第一篇博客</div>   
+                <div class="date">2021-11-28</div>
+                <div class="desc">
+                    从今天起, 我要开始认真学习啦. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil at aspernatur, quasi est molestiae perspiciatis aut deserunt vero laudantium hic illo quas! Esse quam quo quibusdam debitis. Eius, pariatur reiciendis?
+                </div>
+                <a href="blog_detail.html" class="detail">查看全文 &gt; &gt; </a>
+            </div> -->
+
+        </div>
+    </div>
+
+    <script>
+        $.ajax({
+            url:'blog',
+            method:'GET',
+            success: function(data,status) {
+                buildBlogs(data);
+            },
+            error:function(data,status){
+                //重定向
+                location.assign('login.html')
+            }
+        })
+
+        function buildBlogs(blogs){
+            let rightDiv = document.querySelector('.right');
+            //遍历blogs，构造页面
+            for(let blog of blogs){
+                //创建一个blog盒子
+                let blogDiv = document.createElement('div');
+                blogDiv.className='blog';
+                //创建title盒子
+                let titleDiv = document.createElement('div');
+                titleDiv.className='title';
+                titleDiv.innerHTML=blog.title;
+                blogDiv.appendChild(titleDiv);
+                //创建date盒子
+                let dateDiv = document.createElement('div');
+                dateDiv.className='date';
+                dateDiv.innerHTML=dateFormat(blog.postTime);
+                blogDiv.appendChild(dateDiv);
+                //创建desc盒子
+                let descDiv = document.createElement('div');
+                descDiv.className='desc';
+                descDiv.innerHTML=blog.content;
+                blogDiv.appendChild(descDiv);
+                //创建deatil盒子
+                let detailDiv = document.createElement('a');
+                detailDiv.className='detail';
+                detailDiv.href='blog_detail.html?blogID='+ blog.blogID;
+                detailDiv.innerHTML='查看全文';
+                blogDiv.appendChild(detailDiv);
+                //将blog盒子加入到父盒子中
+                rightDiv.appendChild(blogDiv);
+
+            }
+        }
+        function dateFormat(timeStampMS){
+            var date = new Date(timeStampMS);
+
+            var year = date.getFullYear(),
+                month = date.getMonth() + 1,//月份是从0开始的
+                day = date.getDate(),
+                hour = date.getHours(),
+                min = date.getMinutes(),
+                sec = date.getSeconds();
+            var newTime = year + '-' +
+            (month < 10? '0' + month : month) + '-' +
+            (day < 10? '0' + day : day) + ' ' +
+            (hour < 10? '0' + hour : hour) + ':' +
+            (min < 10? '0' + min : min) + ':' +
+            (sec < 10? '0' + sec : sec);
+            return newTime;
+        }
+        $.ajax({
+            url:'user',
+            method:'GET',
+            success:function(data,status){
+                userChange(data);
+            }
+        })
+        function userChange(user){
+            let userName = document.querySelector('.card>h3');
+            userName.innerHTML=user;
+        }
+    </script>
+</body>
+</html>

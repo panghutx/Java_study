@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.youngsay.mybatis.mapper.SelectMapper">
+<!--    public Map<String,Object> selectAll();-->
+    <select id="selectAll" resultType="map">
+        select * from user;
+    </select>
+
+<!--    public List<User> selectVague(String str);-->
+    <select id="selectVague" resultType="User">
+<!--        select * from user where username like "%"#{vague}"%"-->
+        select * from user where username like concat('%',#{vague},'%')
+    </select>
+
+<!--    public void delete(String str);-->
+    <delete id="delete">
+        delete from user where userId in(${str});
+    </delete>
+
+<!--    public void insetUser(User user);-->
+    <insert id="insetUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into user values(null,#{username},#{password})
+    </insert>
+</mapper>
